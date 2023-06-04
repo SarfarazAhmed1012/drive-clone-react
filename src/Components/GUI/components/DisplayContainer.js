@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/DisplayContainer.css";
 import axios from "axios";
 import {
@@ -35,6 +35,7 @@ import {
   Checkbox,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { MoreVert } from "@material-ui/icons";
 import {
   DeleteOutlined,
   Create,
@@ -730,6 +731,13 @@ export default function DisplayContainer({
     setDownloadFiles([]);
   };
 
+  const ITEM_HEIGHT = 48;
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const handleClick = (index) => {
+    setActiveIndex(index === activeIndex ? null : index);
+  };
+
   return (
     <div style={{ paddingLeft: "2rem" }}>
       <ToastContainer />
@@ -921,6 +929,7 @@ export default function DisplayContainer({
         open={open_3}
         onClose={handleClose_3}
         aria-labelledby="form-dialog-title-2"
+        style={{ zIndex: "9999" }}
       >
         <DialogTitle id="form-dialog-title-2">
           {itemDetails.isFolder ? "Folder details" : "File details"}
@@ -1115,7 +1124,7 @@ export default function DisplayContainer({
       </div>
       <div id="contentDisplayer" style={{ display: "flex", flexWrap: "wrap" }}>
         {folders?.length > 0 ? (
-          folders.map((item) => (
+          folders.map((item, index) => (
             <>
               {/* &nbsp;
               {select && <Checkbox color='primary' />} */}
@@ -1135,118 +1144,145 @@ export default function DisplayContainer({
                       }}
                     >
                       <span>{item.folderName}</span>
-                      <span style={{ display: "flex", gap: "2px" }}>
+                      {/* <span style={{ display: "flex", gap: "2px" }}> */}
+
+                      <div>
                         <IconButton
-                          style={{
-                            color: "primary",
-                            backgroundColor: "#dee6f2",
-                          }}
-                          onClick={() =>
-                            handleClickOpen_4({ ...item, isFolder: true })
-                          }
+                          aria-label="more"
+                          id="long-button"
+                          aria-controls="long-menu"
+                          aria-haspopup="true"
+                          onClick={() => handleClick(index)}
                         >
-                          <Create />
+                          <MoreVert />
                         </IconButton>
-                        <IconButton
+                      </div>
+                      {activeIndex === index ? (
+                        <div
                           style={{
-                            color: "primary",
-                            backgroundColor: "#dee6f2",
-                          }}
-                          onClick={() => {
-                            setMove(true);
-                            setFolder(true);
-                            setOldFolder(item);
-                            handleClickOpen_2();
-                          }}
-                        >
-                          <Forward />
-                        </IconButton>
-                        <IconButton
-                          style={{
-                            color: "primary",
-                            backgroundColor: "#dee6f2",
-                          }}
-                          onClick={() => {
-                            setOldFolder(item);
-                            setMove(false);
-                            setFolder(true);
-                            handleClickOpen_2();
+                            zIndex: "99",
+                            display: "flex",
+                            position: "absolute",
+                            top: "1.2rem",
+                            right: "3rem",
                           }}
                         >
-                          <FileCopy />
-                        </IconButton>
-                        <IconButton
-                          style={{
-                            color: "primary",
-                            backgroundColor: "#dee6f2",
-                          }}
-                          onClick={() =>
-                            handleClickOpen_3({ ...item, isFolder: true })
-                          }
-                        >
-                          <Info />
-                        </IconButton>
-                        {item.favourite
-                          ? !selectedFolder && (
-                              <IconButton
-                                style={{
-                                  color: "#6997e5",
-                                  backgroundColor: "#dee6f2",
-                                }}
-                                onClick={() => removeFromStarred(item.location)}
-                              >
-                                <Star />
-                              </IconButton>
-                            )
-                          : !selectedFolder && (
-                              <IconButton
-                                style={{
-                                  color: "primary",
-                                  backgroundColor: "#dee6f2",
-                                }}
-                                onClick={() => addToStarred(item.folderName)}
-                              >
-                                <StarOutline />
-                              </IconButton>
-                            )}
-                        <IconButton
-                          style={{
-                            color: "primary",
-                            backgroundColor: "#dee6f2",
-                          }}
-                          onClick={() =>
-                            selectFolder(
-                              item.folderName,
-                              undefined,
-                              item.location
-                            )
-                          }
-                        >
-                          <Visibility />
-                        </IconButton>
-                        <IconButton
-                          style={{
-                            color: "primary",
-                            backgroundColor: "#dee6f2",
-                          }}
-                          onClick={() => deleteFileOrFolder(item.folderName)}
-                        >
-                          <Delete />
-                        </IconButton>
-                        <IconButton
-                          style={{
-                            color: "primary",
-                            backgroundColor: "#dee6f2",
-                          }}
-                          onClick={(e) => {
-                            // handleClick(e);
-                            handleClickOpen();
-                            setSelectedPath(item.location);
-                          }}
-                        >
-                          <Share />
-                        </IconButton>
-                      </span>
+                          <IconButton
+                            style={{
+                              color: "primary",
+                              backgroundColor: "#dee6f2",
+                            }}
+                            onClick={() =>
+                              handleClickOpen_4({ ...item, isFolder: true })
+                            }
+                          >
+                            <Create />
+                          </IconButton>
+                          <IconButton
+                            style={{
+                              color: "primary",
+                              backgroundColor: "#dee6f2",
+                            }}
+                            onClick={() => {
+                              setMove(true);
+                              setFolder(true);
+                              setOldFolder(item);
+                              handleClickOpen_2();
+                            }}
+                          >
+                            <Forward />
+                          </IconButton>
+                          <IconButton
+                            style={{
+                              color: "primary",
+                              backgroundColor: "#dee6f2",
+                            }}
+                            onClick={() => {
+                              setOldFolder(item);
+                              setMove(false);
+                              setFolder(true);
+                              handleClickOpen_2();
+                            }}
+                          >
+                            <FileCopy />
+                          </IconButton>
+                          <IconButton
+                            style={{
+                              color: "primary",
+                              backgroundColor: "#dee6f2",
+                            }}
+                            onClick={() =>
+                              handleClickOpen_3({ ...item, isFolder: true })
+                            }
+                          >
+                            <Info />
+                          </IconButton>
+                          {item.favourite
+                            ? !selectedFolder && (
+                                <IconButton
+                                  style={{
+                                    color: "#6997e5",
+                                    backgroundColor: "#dee6f2",
+                                  }}
+                                  onClick={() =>
+                                    removeFromStarred(item.location)
+                                  }
+                                >
+                                  <Star />
+                                </IconButton>
+                              )
+                            : !selectedFolder && (
+                                <IconButton
+                                  style={{
+                                    color: "primary",
+                                    backgroundColor: "#dee6f2",
+                                  }}
+                                  onClick={() => addToStarred(item.folderName)}
+                                >
+                                  <StarOutline />
+                                </IconButton>
+                              )}
+                          <IconButton
+                            style={{
+                              color: "primary",
+                              backgroundColor: "#dee6f2",
+                            }}
+                            onClick={() =>
+                              selectFolder(
+                                item.folderName,
+                                undefined,
+                                item.location
+                              )
+                            }
+                          >
+                            <Visibility />
+                          </IconButton>
+                          <IconButton
+                            style={{
+                              color: "primary",
+                              backgroundColor: "#dee6f2",
+                            }}
+                            onClick={() => deleteFileOrFolder(item.folderName)}
+                          >
+                            <Delete />
+                          </IconButton>
+                          <IconButton
+                            style={{
+                              color: "primary",
+                              backgroundColor: "#dee6f2",
+                            }}
+                            onClick={(e) => {
+                              // handleClick(e);
+                              handleClickOpen();
+                              setSelectedPath(item.location);
+                            }}
+                          >
+                            <Share />
+                          </IconButton>
+                        </div>
+                      ) : null}
+
+                      {/* </span> */}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
