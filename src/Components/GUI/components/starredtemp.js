@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/DisplayContainer.css";
 import axios from "axios";
 import {
@@ -24,6 +24,9 @@ import {
   Breadcrumbs,
   Link,
 } from "@material-ui/core";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { MoreVert } from "@material-ui/icons";
 import {
   Info,
   InfoOutlined,
@@ -179,6 +182,13 @@ export default function Starred({ user, search, selector, setSelector }) {
     setDownloadFiles([]);
   };
 
+  const ITEM_HEIGHT = 48;
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const handleClick = (index) => {
+    setActiveIndex(index === activeIndex ? null : index);
+  };
+
   return (
     <div>
       <ToastContainer />
@@ -298,12 +308,17 @@ export default function Starred({ user, search, selector, setSelector }) {
       </div>
       <div id="contentDisplayer" style={{ display: "flex", flexWrap: "wrap" }}>
         {folders?.length > 0 ? (
-          folders.map((item) => (
+          folders.map((item, index) => (
             <>
               {/* &nbsp;
               {select && <Checkbox color='primary' />} */}
               <Card
-                style={{ maxHeight: "80px", margin: "10px", width: "500px" }}
+                style={{
+                  maxHeight: "80px",
+                  margin: "10px",
+                  width: "500px",
+                  position: "relative",
+                }}
               >
                 <CardActionArea>
                   <CardContent>
@@ -318,8 +333,8 @@ export default function Starred({ user, search, selector, setSelector }) {
                       }}
                     >
                       <span>{item.folderName}</span>
-                      <span style={{ display: "flex", gap: "2px" }}>
-                        <IconButton
+                      {/* <span style={{ display: "flex", gap: "2px" }}> */}
+                      {/* <IconButton
                           onClick={() =>
                             handleClickOpen({ ...item, isFolder: true })
                           }
@@ -349,11 +364,54 @@ export default function Starred({ user, search, selector, setSelector }) {
                           }}
                         >
                           <Visibility />
+                        </IconButton> */}
+                      <div>
+                        <IconButton
+                          aria-label="more"
+                          id="long-button"
+                          aria-controls="long-menu"
+                          aria-haspopup="true"
+                          onClick={() => handleClick(index)}
+                        >
+                          <MoreVert />
                         </IconButton>
-                      </span>
+                      </div>
+                      {/* </span> */}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
+                {activeIndex === index ? (
+                  <div
+                    style={{
+                      zIndex: "99999",
+                      display: "flex",
+                      position: "absolute",
+                      top: "1.2rem",
+                      right: "3rem",
+                    }}
+                  >
+                    {!selectedFolder && (
+                      <IconButton
+                        onClick={() => removeFromStarred(item.location)}
+                        style={{
+                          color: "primary",
+                          backgroundColor: "#dee6f2",
+                        }}
+                      >
+                        <Star />
+                      </IconButton>
+                    )}
+                    <IconButton
+                      onClick={() => selectFolder(item.folderName)}
+                      style={{
+                        color: "primary",
+                        backgroundColor: "#dee6f2",
+                      }}
+                    >
+                      <Visibility />
+                    </IconButton>
+                  </div>
+                ) : null}
               </Card>
             </>
           ))
@@ -383,73 +441,80 @@ export default function Starred({ user, search, selector, setSelector }) {
                 (item, key) =>
                   item.mimeType &&
                   item.mimeType.split("/")[0] === "image" && (
-                    <>
-                      &nbsp;
-                      {select && (
-                        <Checkbox
-                          color="primary"
-                          onChange={(e) =>
-                            saveFileBinary(
-                              e,
-                              `data:${item.mimeType};base64,${item.file}`,
-                              item.fileNameWithExt
-                            )
-                          }
-                        />
-                      )}
-                      <ImageListItem
-                        key={key}
-                        style={{ width: "500px", height: "300px" }}
-                      >
-                        <img
-                          src={`data:${item.mimeType};base64,${item.file}`}
-                          alt="image"
-                          loading="lazy"
-                        />
-                        <ImageListItemBar
-                          title={
-                            <Typography
-                              variant="body1"
+                    <ImageListItem
+                      key={key}
+                      style={{ width: "500px", height: "300px" }}
+                    >
+                      <img
+                        src={`data:${item.mimeType};base64,${item.file}`}
+                        alt="image"
+                        loading="lazy"
+                      />
+                      <ImageListItemBar
+                        title={
+                          <Typography
+                            variant="body1"
+                            style={{ color: "white" }}
+                          >
+                            {item.fileName}
+                          </Typography>
+                        }
+                        actionIcon={
+                          <div style={{ display: "flex" }}>
+                            <IconButton
                               style={{ color: "white" }}
+                              onClick={() => handleClick(key)}
                             >
-                              {item.fileName}
-                            </Typography>
-                          }
-                          actionIcon={
-                            <div style={{ display: "flex" }}>
-                              <IconButton
-                                style={{ color: "white" }}
-                                onClick={() =>
-                                  handleClickOpen({ ...item, isFolder: false })
-                                }
-                              >
-                                <InfoOutlined />
-                              </IconButton>
-                              <IconButton
-                                style={{ color: "lightblue" }}
-                                onClick={() => removeFromStarred(item.location)}
-                              >
-                                <Star />
-                              </IconButton>
-                              <a
+                              <MoreVert />
+                            </IconButton>
+                            {activeIndex === key && (
+                              <div
                                 style={{
-                                  textDecoration: "none",
+                                  zIndex: "99999",
+                                  display: "flex",
+                                  position: "absolute",
+                                  gap: "10px",
+                                  top: "0.5rem",
+                                  right: "3rem",
+                                  backgroundColor: "white",
+                                  height: "5vh",
+                                  borderRadius: "10px",
+                                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
                                 }}
-                                download={item.fileNameWithExt}
-                                href={`data:${item.mimeType};base64,${item.file}`}
                               >
-                                <IconButton style={{ color: "white" }}>
-                                  <GetAppOutlined />
-                                </IconButton>
-                              </a>
-                            </div>
-                          }
-                        />
-                      </ImageListItem>
-                    </>
+                                {!selectedFolder && (
+                                  <IconButton
+                                    onClick={() =>
+                                      removeFromStarred(item.location)
+                                    }
+                                    style={{
+                                      color: "black",
+                                    }}
+                                  >
+                                    <Star />
+                                  </IconButton>
+                                )}
+                                <a
+                                  style={{
+                                    textDecoration: "none",
+                                  }}
+                                  download={item.fileNameWithExt}
+                                  href={`data:${item.mimeType};base64,${item.file}`}
+                                >
+                                  <IconButton style={{ color: "black" }}>
+                                    <GetAppOutlined />
+                                  </IconButton>
+                                </a>
+                              </div>
+                            )}
+                          </div>
+                        }
+                      />
+                    </ImageListItem>
                   )
               )}
             </ImageList>
+
             <Divider />
             <br />
             <Typography variant="h6">Videos</Typography>

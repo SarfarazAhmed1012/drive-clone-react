@@ -38,7 +38,7 @@ const ForgotPassword = () => {
           setDisabled(true);
         }}
       >
-        <h1>ForgotPassword</h1>
+        <h2 style={{ color: "#0077ef" }}>Forgot Password?</h2>
         <input
           type="email"
           name="email"
@@ -46,13 +46,13 @@ const ForgotPassword = () => {
           placeholder="Email"
           required
         />
-        <NavLink to="/" style={{ float: "right" }}>
-          Back to login
+        <NavLink to="/" style={{ float: "right", textDecoration: "none" }}>
+          <p style={{ color: "#0077ef", fontWeight: "bold" }}>Back to login</p>
         </NavLink>
         <button
           className={basestyle.button_common}
           style={{
-            backgroundColor: `${disabled ? "grey" : "olivedrab"}`,
+            backgroundColor: `${disabled ? "grey" : "#1d88b3"}`,
             cursor: `${!disabled && "pointer"}`,
           }}
           disabled={disabled}

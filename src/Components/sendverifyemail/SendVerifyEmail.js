@@ -36,7 +36,7 @@ const SendVerifyEmail = () => {
           handleEmailVerification(e);
         }}
       >
-        <h1>Send Verification Email</h1>
+        <h2 style={{ color: "#0077ef" }}>Send Verification Email</h2>
         <input
           type="email"
           name="email"
@@ -44,13 +44,13 @@ const SendVerifyEmail = () => {
           placeholder="Enter your email"
           required
         />
-        <NavLink to="/" style={{ float: "right" }}>
-          Back to login
+        <NavLink to="/" style={{ float: "right", textDecoration: "none" }}>
+          <p style={{ color: "#0077ef", fontWeight: "bold" }}>Back to login</p>
         </NavLink>
         <button
           className={basestyle.button_common}
           style={{
-            backgroundColor: `${disabled ? "grey" : "olivedrab"}`,
+            backgroundColor: `${disabled ? "grey" : "#1d88b3"}`,
             cursor: `${!disabled && "pointer"}`,
           }}
           disabled={disabled}
