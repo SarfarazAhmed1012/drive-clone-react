@@ -1,0 +1,44 @@
+.register {
+  width: 400px;
+  background: rgb(215, 224, 242);
+  background: linear-gradient(
+    90deg,
+    rgba(229, 230, 233, 0.507) 5%,
+    rgb(241, 236, 238) 68%
+  );
+  border: 2px solid #1d88b3;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+  border-radius: 8px;
+  padding: 1rem;
+  align-items: center;
+  text-align: center;
+}
+
+.register > form input {
+  margin: 2% 0;
+  width: 80%;
+  padding: 12px;
+  font-size: 16px;
+  color: #1d88b3;
+  border: 2px solid #1d88b3;
+  border-radius: 10px;
+  padding: 10px 25px;
+  background: transparent;
+}
+
+.register > form input::placeholder {
+  color: #91b5c4;
+}
+
+.register > form input:active {
+  box-shadow: 2px 2px 15px #1d88b3 inset;
+  border: 2px solid #096e96;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: whitesmoke;
+}

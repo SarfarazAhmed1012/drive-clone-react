@@ -1,0 +1,63 @@
+.login {
+  width: 400px;
+  background: rgb(215, 224, 242);
+  background: linear-gradient(
+    90deg,
+    rgba(229, 230, 233, 0.507) 5%,
+    rgb(241, 236, 238) 68%
+  );
+  border: 2px solid #1d88b3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  align-items: center;
+  text-align: center;
+}
+
+.login > form input {
+  margin: 2% 0;
+  width: 80%;
+  padding: 12px;
+  font-size: 16px;
+  color: #1d88b3;
+  border: 2px solid #1d88b3;
+  border-radius: 10px;
+  padding: 10px 25px;
+  background: transparent;
+}
+
+.login > form input::placeholder {
+  color: #91b5c4;
+}
+
+.login > form input:active {
+  box-shadow: 2px 2px 15px #1d88b3 inset;
+  border: 2px solid #096e96;
+}
+
+.login > form .error {
+  color: #ff3b30;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+}
+
+.login > form .button {
+  border: none;
+  border-radius: 20px;
+  color: #ffffff;
+  font-size: 16px;
+  padding: 12px 24px;
+  margin-top: 1rem;
+}
+
+.login > form .button:disabled {
+  opacity: 0.7;
+}
+
+.login > form .forgotPassword,
+.login > form .signup {
+  color: #808080;
+  font-size: 14px;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}

@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
+
+#displayInfoNav {
+  border-bottom: 1px solid silver;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#contentDisplayer {
+  padding: 10px;
+  min-width: 80vw;
+}
